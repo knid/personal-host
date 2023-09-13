@@ -53,7 +53,7 @@ Then everything is ok.
 ### Check DNS leaks, DNS over HTTPS and Wireguard
 
 - [DNS Leak Test](https://dnsleaktest.com)
-- [DND over HTTPS Test](https://1.1.1.1/help)
+- [DNS over HTTPS Test](https://1.1.1.1/help)
 - [IP Check](https://ip.me)
 
 You can check with **tcpdump** for best.
