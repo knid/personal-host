@@ -12,7 +12,7 @@ Pi-hole for blocking domains. Ads, analytics and custom domains.
 
 ### Wireguard
 
-Wireguard to use all other services internally, encrypt my internet traffic and connect all my other devices even if they are not connected to the same network.
+Wireguard to access all other services internally, encrypt my internet traffic and connect all my other devices even if they are not connected to the same network.
 
 ## Start
 
