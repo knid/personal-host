@@ -1,0 +1,5 @@
+echo "[Interface]" > ${WG_CONFIG_PATH}
+echo "Address = ${CIDR}" >> ${WG_CONFIG_PATH}
+echo "SaveConfig = true" >> ${WG_CONFIG_PATH}
+echo "ListenPort = ${PORT}" >> ${WG_CONFIG_PATH}
+echo "PrivateKey = $(cat ${WG_PRIVATE_KEY_PATH})" >> ${WG_CONFIG_PATH}

@@ -1,0 +1,13 @@
+#!/bin/bash
+counter=10
+for pubkey in $(echo $1 | tr ";" "\n")
+do
+  echo "Adding ${pubkey} | 10.0.0.${counter}/32"
+
+  echo >> $WG_CONFIG_PATH
+  echo "[Peer]" >> $WG_CONFIG_PATH
+  echo "PublicKey = ${pubkey}" >> $WG_CONFIG_PATH
+  echo "AllowedIPs = $(echo $CIDR | cut -d '.' -f1-3).${counter}/32" >> $WG_CONFIG_PATH
+  
+  counter=$((counter+1))
+done

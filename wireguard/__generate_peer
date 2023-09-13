@@ -1,0 +1,14 @@
+#!/bin/bash
+if [ $1 ]; then
+    private_key=$1
+else
+    private_key=$(wg genkey)
+fi
+
+public_key=$(echo $private_key | wg pubkey)
+
+peer_ip=$(echo $CIDR | cut -d "." -f1-3)$(cat /tmp/wg_last_peer_ip | {read -r last} && echo $((last=$last+1))
+mkdir /etc/wireguard/peers/$peer_ip
+echo $private_key > /etc/wireguard/peers/$peer_ip/private.key
+echo $public_key > /etc/wireguard/peers/$peer_ip/public.key
+echo $last > /tmp/wg_last_peer_ip

@@ -1,0 +1,3 @@
+if [ ${PRIVATE_KEY} ]; then echo ${PRIVATE_KEY} > ${WG_PRIVATE_KEY_PATH}; \
+    else wg genkey > ${WG_PRIVATE_KEY_PATH}; fi
+cat ${WG_PRIVATE_KEY_PATH} | wg pubkey > ${WG_PUBLIC_KEY_PATH}

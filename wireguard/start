@@ -1,0 +1,19 @@
+#!/bin/bash
+sh gen_keys
+sh gen_server_conf
+
+mkdir /etc/wireguard/peers
+echo "1" > /tmp/wg_last_peer_ip
+
+if [ $DEFAULT_PEERS ]; then
+    sh add_peers $DEFAULT_PEERS 
+fi
+
+sh iprules_up
+sh up
+
+echo "Wireguard container started" > /tmp/wireguard_container_info
+echo "Public Key: $(cat $WG_PUBLIC_KEY_PATH)" >> /tmp/wireguard_container_info
+echo "PORT: $PORT" >> /tmp/wireguard_container_info
+
+tail -f /tmp/wireguard_container_info

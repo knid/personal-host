@@ -1,0 +1,65 @@
+version: '3'
+
+services:
+  wireguard:
+    build:
+      context: ./wireguard
+    environment:
+      # Add peer public keys. For more keys, append ";" (semicolon) to end of keys
+      # Example: DEFAULT_PEERS=pubkey1;pubkey2;pubkey3
+      - DEFAULT_PEERS=
+      # Add your private key or it will be created auto. 
+      # For see private key read manually /etc/wireguard/private.key inside container
+      - PRIVATE_KEY=
+      - CIDR=10.8.0.1/24
+    container_name: wireguard
+    hostname: wg.vpn
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    ports:
+      - "51820:51820/udp"
+    dns: 10.0.0.11
+    sysctls:
+      - net.ipv4.ip_forward=1
+      - net.ipv4.conf.all.src_valid_mark=1
+    networks:
+      custom-network:
+        ipv4_address: 10.0.0.10
+    restart: unless-stopped
+    depends_on:
+      - pihole
+  pihole:
+    image: pihole/pihole:latest
+    container_name: pihole
+    hostname: pi.hole
+    volumes:
+      - './etc-pihole:/etc/pihole'
+      - './etc-dnsmasq.d:/etc/dnsmasq.d'
+    environment:
+      - DNS1=10.0.0.12#53
+      - DNS2="no"
+      - WEBPASSWORD=asd123
+      - DNSMASQ_USER=root
+    dns: 10.0.0.12
+    networks:
+      custom-network:
+        ipv4_address: 10.0.0.11
+    restart: unless-stopped
+    depends_on:
+      - dnscrypt
+  dnscrypt:
+    build: ./dnscrypt-proxy
+    container_name: dnscrypt-proxy
+    hostname: dnscrypt.proxy
+    dns: 1.1.1.1
+    networks:
+      custom-network:
+        ipv4_address: 10.0.0.12
+    restart: unless-stopped
+networks:
+  custom-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.0.0.0/24
